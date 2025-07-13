@@ -131,3 +131,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 })
 
+//Задание 3
+document.addEventListener("DOMContentLoaded", loadCharacters);
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.slide');
+    if (!slides.length) return;
+    let i = 0;
+
+    const show = n => {
+        slides.forEach(s => s.classList.remove('active'));
+        slides[n].classList.add('active');
+    };
+
+    setInterval(() => {
+        i = (i + 1) % slides.length;
+        show(i);
+    }, 3000);
+});
