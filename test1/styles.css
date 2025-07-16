@@ -1,0 +1,13 @@
+
+#colorBox {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #000;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+
+#colorBox.active {
+    background-color: coral;
+}
