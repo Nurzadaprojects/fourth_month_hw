@@ -49,3 +49,45 @@ tabsParent.onclick = (event) => {
     }
 }
 
+
+//CONVERTER Homework 5
+
+const currencyInputs = document.querySelectorAll('input')
+let exchangeRates = {}
+
+const fetchRates = async () => {
+    try {
+        const response = await fetch('../data/converter.json')
+        exchangeRates = await response.json()
+    } catch (error) {
+        console.error('Incorrect exchange rate:', error)
+    }
+}
+
+const convert = (changedInput) => {
+    const value = parseFloat(changedInput.value) || 0
+    if (!exchangeRates.usd || !exchangeRates.eur) return
+
+    const rates = {
+        som: 1,
+        usd: 1 / exchangeRates.usd,
+        eur: 1 / exchangeRates.eur
+    }
+
+    const baseValue = value / rates[changedInput.id]
+
+    currencyInputs.forEach(input => {
+        if (input !== changedInput) {
+            input.value = (baseValue * rates[input.id]).toFixed(2)
+        }
+    })
+}
+
+const addEventListeners = () => {
+    currencyInputs.forEach(input => {
+        input.addEventListener('input', () => convert(input))
+    })
+}
+
+fetchRates().then(addEventListeners)
+
