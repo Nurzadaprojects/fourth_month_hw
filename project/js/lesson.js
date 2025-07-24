@@ -91,3 +91,48 @@ const addEventListeners = () => {
 
 fetchRates().then(addEventListeners)
 
+
+//CARD SWITCHER Задание 6/1
+
+const cardBlock = document.querySelector('.card');
+const btnNext = document.querySelector('#btn-next');
+const btnPrev = document.querySelector('#btn-prev');
+
+let cardId = 1;
+const maxCardId = 200;
+
+const loadCard = async (id) => {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
+
+        if (!response.ok) {
+            throw new Error(`Ошибка ${response.status}: Пост не найден`);
+        }
+
+        const data = await response.json();
+
+        cardBlock.innerHTML = `
+            <p>${data.title}</p>
+            <p>${data.completed ? '':''}</p>
+            <span>ID: ${data.id}</span>
+        `;
+
+    } catch (error) {
+        console.error(error);
+        cardBlock.innerHTML = `<p style="color: red;">Ошибка загрузки данных</p>`;
+    }
+};
+
+btnNext.onclick = () => {
+    cardId = cardId >= maxCardId ? 1 : cardId + 1;
+    loadCard(cardId);
+};
+
+btnPrev.onclick = () => {
+    cardId = cardId <= 1 ? maxCardId : cardId - 1;
+    loadCard(cardId);
+};
+
+loadCard(cardId);
+
+
